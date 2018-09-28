@@ -1,7 +1,9 @@
-oc plugin cleanup
-=================
+oc-plugins
+==========
 
-OKD CLI client plugin for cleaning up excessive (stale) resources.
+A collection of plugins for the OKD / Kubernetes CLI client.
+
+1. `cleanup`: Clean up excessive (stale) resources
 
 Usage
 -----
@@ -15,7 +17,7 @@ Installation
 
 See [Installing Plug-ins](
 https://docs.openshift.com/container-platform/3.9/cli_reference/extend_cli.html#cli-installing-plugins
-) (official docs)
+) in the official documentation.
 
 Development
 -----------
