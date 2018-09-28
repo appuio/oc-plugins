@@ -1,0 +1,5 @@
+name: "cleanup"
+shortDesc: "cleanup plug-in"
+longDesc: "Clean up excessive (stale) resources."
+example: "oc plugin cleanup"
+command: "./cleanup.sh"
