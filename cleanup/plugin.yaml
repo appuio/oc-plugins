@@ -3,3 +3,8 @@ shortDesc: "cleanup plug-in"
 longDesc: "Clean up excessive (stale) resources."
 example: "oc plugin cleanup"
 command: "./cleanup.sh"
+flags:
+  - name: "keep"
+    shorthand: "k"
+    desc: "keep most current <n> images"
+    defValue: "1"
