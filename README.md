@@ -9,7 +9,7 @@ Usage
 -----
 
 ```bash
-$ oc plugin cleanup
+oc plugin <plugin-name>
 ```
 
 Installation
@@ -22,5 +22,13 @@ https://docs.openshift.com/container-platform/3.9/cli_reference/extend_cli.html#
 Development
 -----------
 
-- [Extending the CLI](https://docs.openshift.com/container-platform/3.7/cli_reference/extend_cli.html)
+- [Extending the CLI](https://docs.openshift.com/container-platform/3.9/cli_reference/extend_cli.html)
   (official docs)
+
+```bash
+# configure plugins path for development
+export KUBECTL_PLUGINS_PATH=$(pwd)
+
+# list all plugins, print usage
+oc plugin
+```
