@@ -9,7 +9,18 @@ Usage
 -----
 
 ```bash
-oc plugin <plugin-name>
+oc plugin <plugin-name> --help
+```
+
+### cleanup
+
+Cleanup removes stale image stream tags that are tagged with a commit SHA of
+a specific repository (e.g. when you automatically tag built images with the
+related Git commit hash). [Due to a bug](https://duckduckgo.com/?q=kubectl+plugin+changes+directory)
+you have to explicitly specify the (local) repository directory path.
+
+```bash
+oc plugin cleanup -p /path/to/git-repository/
 ```
 
 Installation
