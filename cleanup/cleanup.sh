@@ -3,6 +3,7 @@
 set -e -o pipefail -u
 
 GIT_REPO_PATH=${KUBECTL_PLUGINS_LOCAL_FLAG_GIT_REPO_PATH}
+FORCE=${KUBECTL_PLUGINS_LOCAL_FLAG_FORCE}
 KEEP=${KUBECTL_PLUGINS_LOCAL_FLAG_KEEP}
 FROM_HEAD=$(( KEEP+1 ))
 NAMESPACE=${KUBECTL_PLUGINS_CURRENT_NAMESPACE}
@@ -30,7 +31,7 @@ get_active_images() {
          "${images_in_cron}" | sort --unique
 }
 
-get_deletion_candidates() {
+get_inactive_images() {
     local istags_path='{range .items[*]}{.metadata.name}{"\n"}{end}'
     local sort_by_date='--sort-by .metadata.creationTimestamp'
 
@@ -43,6 +44,23 @@ get_deletion_candidates() {
     comm -23 <(echo ${all_tags}) <(echo ${all_active})
 }
 
+get_deletion_candidates() {
+    local commit_list=($(get_commit_list))
+    local inactive_images=($(get_inactive_images))
+    local deletion_candidates=()
+
+    for commit_hash in ${commit_list[*]}; do
+        for candidate in ${inactive_images[*]}; do
+            # remove all images ending with commit SHA
+            if [[ ${candidate} == *${commit_hash} ]]; then
+                deletion_candidates+=(${candidate})
+            fi
+        done
+    done
+
+    echo ${deletion_candidates[*]}
+}
+
 main() {
     test -z ${GIT_REPO_PATH} && {
         echo 'Path required. Please use -p to specify the Git repository.'
@@ -50,27 +68,27 @@ main() {
     }
 
     echo "Comparing commits from ${GIT_REPO_PATH} in namespace ${NAMESPACE} .."
+    local candidates=($(get_deletion_candidates))
 
-    local commit_list=($(get_commit_list))
-    local deletion_candidates=($(get_deletion_candidates))
-    local counter=0
-
-    echo "Scanning ${#deletion_candidates[@]} image tags" \
-         "against ${#commit_list[@]} commits ..."
-
-    for commit_hash in ${commit_list[*]}; do
-        for candidate in ${deletion_candidates[*]}; do
-            # remove all images ending with commit SHA
-            if [[ ${candidate} == *${commit_hash} ]]; then
-                echo "Deleting $candidate ..."
-                ${oc} delete istag --ignore-not-found ${candidate}
-                (( counter++ ))
-            fi
+    if [[ ${#candidates[@]} == 0 ]]; then
+        echo 'No image tags found for deletion.'
+        exit 0
+    else
+        echo "${#candidates[@]} image tags found for deletion:"
+        for image_tag in ${candidates[*]}; do
+            echo "- $image_tag"
         done
-    done
+    fi
 
-    echo "${counter} image tags deleted."
-    exit 0
+    if [[ ${FORCE} != 'y' ]]; then
+        read -p "Delete images tags? (y/N) " FORCE
+    fi
+    if [[ ${FORCE} == 'y' ]]; then
+        echo "Deleting ${#candidates[@]} image tags ..."
+        ${oc} delete istag --ignore-not-found ${candidates[*]}
+    else
+        echo 'Nothing was deleted.'
+    fi
 }
 
 main
