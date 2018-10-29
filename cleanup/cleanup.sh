@@ -49,9 +49,9 @@ get_deletion_candidates() {
     local inactive_images=($(get_inactive_images))
     local deletion_candidates=()
 
+    # select all inactive images tagged with one of the commits
     for commit_hash in ${commit_list[*]}; do
         for candidate in ${inactive_images[*]}; do
-            # remove all images ending with commit SHA
             if [[ ${candidate} == *${commit_hash} ]]; then
                 deletion_candidates+=(${candidate})
             fi
@@ -69,12 +69,13 @@ main() {
 
     echo "Comparing commits from ${GIT_REPO_PATH} in namespace ${NAMESPACE} .."
     local candidates=($(get_deletion_candidates))
+    local candidate_count=${#candidates[@]}
 
-    if [[ ${#candidates[@]} == 0 ]]; then
+    if [[ ${candidate_count} == 0 ]]; then
         echo 'No image tags found for deletion.'
         exit 0
     else
-        echo "${#candidates[@]} image tags found for deletion:"
+        echo "${candidate_count} image tags found for deletion:"
         for image_tag in ${candidates[*]}; do
             echo "- $image_tag"
         done
@@ -84,7 +85,7 @@ main() {
         read -p "Delete images tags? (y/N) " FORCE
     fi
     if [[ ${FORCE} == 'y' ]]; then
-        echo "Deleting ${#candidates[@]} image tags ..."
+        echo "Deleting ${candidate_count} image tags ..."
         ${oc} delete istag --ignore-not-found ${candidates[*]}
     else
         echo 'Nothing was deleted.'
