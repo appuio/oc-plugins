@@ -1,7 +1,7 @@
 name: "cleanup"
 shortDesc: "cleanup plug-in"
-longDesc: "Clean up excessive (stale) resources."
-example: "oc plugin cleanup"
+longDesc: "Clean up excessive (stale) image tags, images and related resources."
+example: "oc plugin cleanup IMAGE --repository $PWD"
 command: "./cleanup.sh"
 flags:
   - name: "force"
