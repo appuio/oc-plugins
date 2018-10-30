@@ -4,6 +4,7 @@ IMAGE_NAME=$1
 
 set -e -o pipefail -u
 
+GIT_COMMIT_LIMIT=${KUBECTL_PLUGINS_LOCAL_FLAG_GIT_COMMIT_LIMIT}
 GIT_REPO_PATH=${KUBECTL_PLUGINS_LOCAL_FLAG_GIT_REPO_PATH}
 FORCE=${KUBECTL_PLUGINS_LOCAL_FLAG_FORCE}
 KEEP=${KUBECTL_PLUGINS_LOCAL_FLAG_KEEP}
@@ -12,7 +13,7 @@ oc="${KUBECTL_PLUGINS_CALLER} -n ${NAMESPACE}"
 
 get_commit_list() {
     # all commits except HEAD in the Git repository
-    git -C ${GIT_REPO_PATH} rev-list --author-date-order HEAD | tail -n "+2"
+    git -C ${GIT_REPO_PATH} rev-list --max-count ${GIT_COMMIT_LIMIT} --author-date-order HEAD~
 }
 
 get_imagestreamtags() {

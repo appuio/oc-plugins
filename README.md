@@ -20,7 +20,7 @@ related Git commit hash). [Due to a bug](https://github.com/kubernetes/kubernete
 you have to explicitly specify the local Git repository with an absolute path.
 
 ```bash
-oc plugin cleanup -p /path/to/git-repository/
+oc plugin cleanup my-image -p /path/to/git-repository/
 ```
 
 Installation
@@ -38,7 +38,7 @@ following requirements for the commands to work.
 
 ### cleanup
 
-1. Bash
+1. Bash v4+
 1. Git
 
 Development
