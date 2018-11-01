@@ -1,0 +1,9 @@
+# Travis CI has ShellCheck preinstalled.
+# (Other CIs need image: koalaman/shellcheck)
+
+before_script:
+- shellcheck --version
+- echo ----- */*.sh
+
+script:
+- shellcheck */*.sh
