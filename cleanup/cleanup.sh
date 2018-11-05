@@ -12,17 +12,20 @@ NAMESPACE=${KUBECTL_PLUGINS_CURRENT_NAMESPACE}
 oc="${KUBECTL_PLUGINS_CALLER} -n ${NAMESPACE}"
 
 get_commit_list() {
+    set -e
     # all commits except HEAD in the Git repository
     git -C "${GIT_REPO_PATH}" rev-list --max-count "${GIT_COMMIT_LIMIT}" --author-date-order HEAD~
 }
 
 get_imagestreamtags() {
+    set -e
     local imagestream_path='{range .status.tags[*]}{.tag}{"\n"}{end}'
 
     ${oc} get imagestream "${IMAGE_NAME}" -o jsonpath="${imagestream_path}" | sort --unique
 }
 
 get_active_imagestreamtags() {
+    set -e
     local images_in_dc_rc_sset
     local images_in_pod_cont
     local images_in_pod_init
@@ -49,6 +52,7 @@ get_active_imagestreamtags() {
 }
 
 get_inactive_imagestreamtags() {
+    set -e
     local all_tags
     local all_active
 
@@ -62,6 +66,7 @@ get_inactive_imagestreamtags() {
 }
 
 get_deletion_candidates() {
+    set -e
     local commit_list
     local inactive_istags
     local deletion_candidates
