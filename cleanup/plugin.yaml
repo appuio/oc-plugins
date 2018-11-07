@@ -18,4 +18,4 @@ flags:
   - name: "keep"
     shorthand: "k"
     desc: "keep most current <n> images"
-    defValue: "3"
+    defValue: "10"
