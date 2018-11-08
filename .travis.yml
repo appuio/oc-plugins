@@ -1,9 +1,22 @@
 # Travis CI has ShellCheck preinstalled.
 # (Other CIs need image: koalaman/shellcheck)
+language: generic
 
-before_script:
-- shellcheck --version
-- echo ----- */*.sh
+stages:
+- { name: lint }
+- { name: deploy, if: branch = master AND NOT type = pull_request }
 
-script:
-- shellcheck */*.sh
+jobs:
+  include:
+  - name: Lint shell scripts
+    stage: lint
+    before_script:
+    - shellcheck --version
+    - echo ----- */*.sh
+    script:
+    - shellcheck */*.sh
+
+  - name: Trigger container-oc build
+    stage: deploy
+    script:
+    - curl -H "Content-Type:application/json" --data '{"build":true}' -X POST "$DOCKERHUB_TRIGGER_URL"
