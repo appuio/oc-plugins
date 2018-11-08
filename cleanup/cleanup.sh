@@ -14,7 +14,7 @@ oc="${KUBECTL_PLUGINS_CALLER} -n ${NAMESPACE}"
 get_commit_list() {
     set -e
     # all commits except HEAD in the Git repository
-    git -C "${GIT_REPO_PATH}" rev-list --max-count "${GIT_COMMIT_LIMIT}" --author-date-order HEAD~
+    git --git-dir "${GIT_REPO_PATH}"/.git --work-tree "${GIT_REPO_PATH}" rev-list --max-count "${GIT_COMMIT_LIMIT}" --date-order HEAD~
 }
 
 get_imagestreamtags() {
