@@ -1,6 +1,9 @@
 oc-plugins
 ==========
 
+[![Travis CI](https://img.shields.io/travis/appuio/oc-plugins/master.svg)](https://travis-ci.com/appuio/oc-plugins)
+[![container-oc Build](https://img.shields.io/docker/build/appuio/oc.svg)](https://hub.docker.com/r/appuio/oc/builds)
+
 A collection of plugins for the OKD / Kubernetes CLI client.
 
 1. `cleanup`: Clean up excessive (stale) resources
