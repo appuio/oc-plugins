@@ -1,7 +1,7 @@
 oc-plugins
 ==========
 
-[![Travis CI](https://img.shields.io/travis/appuio/oc-plugins/master.svg)](https://travis-ci.com/appuio/oc-plugins)
+[![Travis CI](https://travis-ci.com/appuio/oc-plugins.svg?branch=master)](https://travis-ci.com/appuio/oc-plugins)
 [![container-oc Build](https://img.shields.io/docker/build/appuio/oc.svg)](https://hub.docker.com/r/appuio/oc/builds)
 
 A collection of plugins for the OKD / Kubernetes CLI client.
