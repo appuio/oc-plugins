@@ -71,9 +71,9 @@ get_deletion_candidates() {
     local inactive_istags
     local deletion_candidates
 
-    commit_list=($(get_commit_list))
-    inactive_istags=($(get_inactive_imagestreamtags))
-    deletion_candidates=()
+    commit_list="($(get_commit_list))"
+    inactive_istags="($(get_inactive_imagestreamtags))"
+    deletion_candidates="()"
 
     # select all inactive images tagged with one of the commits
     for commit_hash in "${commit_list[@]}"; do
