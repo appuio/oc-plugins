@@ -71,21 +71,25 @@ get_deletion_candidates() {
     local inactive_istags
     local deletion_candidates
 
-    commit_list="($(get_commit_list))"
-    inactive_istags="($(get_inactive_imagestreamtags))"
-    deletion_candidates="()"
+    commit_list=($(get_commit_list))
+    inactive_istags=($(get_inactive_imagestreamtags))
+    deletion_candidates=()
 
-    # select all inactive images tagged with one of the commits
-    for commit_hash in "${commit_list[@]}"; do
-        for candidate in "${inactive_istags[@]}"; do
-            if [[ ${candidate} == "${commit_hash}" ]]; then
-                deletion_candidates+=("${IMAGE_NAME}:${candidate}")
-            fi
+    if [[ ${#commit_list[@]} -gt 0 ]] && [[ ${#inactive_istags[@]} -gt 0 ]]; then
+        # select all inactive images tagged with one of the commits
+        for commit_hash in "${commit_list[@]}"; do
+            for candidate in "${inactive_istags[@]}"; do
+                if [[ ${candidate} == "${commit_hash}" ]]; then
+                    deletion_candidates+=("${IMAGE_NAME}:${candidate}")
+                fi
+            done
         done
-    done
+    fi
 
-    # strip out the <KEEP> youngest images we want to keep
-    echo "${deletion_candidates[@]}" | tr ' ' '\n' | tail -n "+$(( KEEP+1 ))"
+    if [[ ${#deletion_candidates[@]} -gt 0 ]]; then
+        # strip out the <KEEP> youngest images we want to keep
+        echo "${deletion_candidates[@]}" | tr ' ' '\n' | tail -n "+$(( KEEP+1 ))"
+    fi
 }
 
 main() {
