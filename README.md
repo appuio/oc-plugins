@@ -11,7 +11,7 @@ A collection of plugins for the OKD / Kubernetes CLI client.
 Usage
 -----
 
-```bash
+```console
 oc plugin <plugin-name> --help
 ```
 
@@ -24,6 +24,27 @@ you have to explicitly specify the local Git repository with an absolute path.
 
 ```bash
 oc plugin cleanup my-image -p /path/to/git-repository/
+```
+
+Example: (using Docker)
+
+```console
+$ docker run --rm -it -v $(pwd):/app appuio/oc:v3.9 oc plugin cleanup --help
+Clean up excessive (stale) image tags, images and related resources.
+
+Usage:
+  oc plugin cleanup [options]
+
+Examples:
+  oc plugin cleanup IMAGE --git-repo-path $PWD
+
+Options:
+  -f, --force='n': don't ask for confirmation to delete image tags (use: y)
+  -l, --git-commit-limit='100': only look at the first <n> commits to compare with tags
+  -p, --git-repo-path='': absolute path to Git repository (for current dir use: $PWD)
+  -k, --keep='10': keep most current <n> images
+
+Use "oc options" for a list of global command-line options (applies to all commands).
 ```
 
 Installation
