@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2207
 
 IMAGE_NAME=$1
 
