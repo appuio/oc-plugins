@@ -94,6 +94,7 @@ get_deletion_candidates() {
 }
 
 main() {
+    echo 'Deprecated: Please have a look at github.com/appuio/image-cleanup.'
     test -z "${IMAGE_NAME}" && {
         echo 'Image name required. Please specify as first argument.'
         echo
