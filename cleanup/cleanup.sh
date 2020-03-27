@@ -94,7 +94,14 @@ get_deletion_candidates() {
 }
 
 main() {
-    echo 'Deprecated: Please have a look at github.com/appuio/image-cleanup.'
+    echo
+    echo "----------------------------------------------------------------------"
+    echo "DEPRECATION NOTICE: This plugin will be removed by June 1, 2020."
+    echo "  We're replacing it with Seiso. See https://github.com/appuio/seiso"
+    echo "  Please migrate today! Migration guide:"
+    echo "  ➜ https://github.com/appuio/seiso#migrate-from-legacy-cleanup-plugin"
+    echo "----------------------------------------------------------------------"
+    echo
     test -z "${IMAGE_NAME}" && {
         echo 'Image name required. Please specify as first argument.'
         echo
